@@ -53,7 +53,7 @@ app.use(flash());
 if (process.env.NODE_ENV === "production") app.set('trust proxy', 1); //TODO: also set cookie true.
 
 app.use(async (req, res, next) => {
-    res.set("Cache-Content", "no-cache, no-store, must-revalidate");
+    res.set("Cache-Control", "no-cache, no-store, must-revalidate");
 
     res.locals.errorMessage = req.flash("errorMessage");
     res.locals.successMessage = req.flash("successMessage");
