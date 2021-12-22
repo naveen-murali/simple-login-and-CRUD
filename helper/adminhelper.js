@@ -64,7 +64,8 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             try {
                 let user = await db.get().collection(process.env.USER_COLLECTION).findOneAndDelete({ email: email });
-                return resolve({message: `${user.value.email} is removed`});
+
+                return resolve({ message: `${user.value.email} is removed` });
             } catch (err) {
                 return reject({ reason: `Failed to delete ${email}` });
             }

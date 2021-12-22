@@ -41,8 +41,8 @@ router.post("/login", isUserIn,
             if (errors.length === 1)
                 throw { reason: errors[0].msg };
                 
-            let user = await userHlper.CHECK_USER(req.body)
-            req.session.user = user;
+            let user = await userHlper.CHECK_USER(req.body);
+            req.session.user = { _id: user._id };
             return res.redirect("/");
         } catch (err) {
             req.flash("errorMessage", err.reason);

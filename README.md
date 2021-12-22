@@ -13,7 +13,7 @@ Simple login page and integratting mongoDB.
 * express-validator
 
 ### Version
-1.0.0
+1.5.0
 
 ## Usage
 

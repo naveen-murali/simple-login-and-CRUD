@@ -13,11 +13,11 @@ const mongodb = require("./config/connectDB");
 dotenv.config({ path: "./config/config.env" });
 mongodb.connect();
 
+// -------------------------------------------------------------------------------------------------------------------------------------
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV === "development")
-    app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "/public")));
@@ -50,15 +50,22 @@ app.use(session({
     })
 }));
 app.use(flash());
+if (process.env.NODE_ENV === "production") app.set('trust proxy', 1); //TODO: also set cookie true.
 
-if (process.env.NODE_ENV === "production")
-    app.set('trust proxy', 1); //TODO: also set cookie true.
-
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     res.set("Cache-Content", "no-cache, no-store, must-revalidate");
 
     res.locals.errorMessage = req.flash("errorMessage");
     res.locals.successMessage = req.flash("successMessage");
+
+    if (req.session.user) {
+        let user = await require("./helper/getUser")(req.session.user._id);
+        if (!user.status) {
+            delete req.session.user;
+            next();
+        }
+        req.session.user = user.user;
+    }
 
     if (req.session.user) {
         res.locals.userName = req.session.user.name;
@@ -68,7 +75,6 @@ app.use((req, res, next) => {
         res.locals.adminName = req.session.admin.name;
         res.locals.adminEmail = req.session.admin.email;
     }
-
     next();
 });
 
@@ -91,5 +97,7 @@ app.use((err, req, res, next) => {
 
 app.listen(
     PORT,
-    () => console.log(`Server is running in PORT ${PORT} \n[ http://localhost:${PORT} ]`)
+    () =>
+        console.log(`Server is running in PORT ${PORT} \n[ http://localhost:${PORT} ]`)
 );
+// -------------------------------------------------------------------------------------------------------------------------------------
