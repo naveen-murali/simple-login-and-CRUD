@@ -1,0 +1,39 @@
+<div class="container">
+    <form action="/admin/updateUser/{{client._id}}" method="post" class="container p-md-5 p-2">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            
+            {{> _success}}
+            {{> _error}}
+            
+            <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
+                <h5 class="h4 text-primary mb-3">{{action}}</h5>
+                {{#if viewOnly}}
+                <a href="/admin/editUser/{{client.email}}" type="submit" class="btn btn-warning align-self-start">Edit</a>
+                {{else}}
+                <a href="/admin/viewUser/{{client.email}}" type="submit" class="btn btn-warning align-self-start">View Only</a>
+                {{/if}}
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <label for="exampleInputName" class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control" id="exampleInputName"
+                        aria-describedby="emailHelp" oninput="checkName(event)" {{#if viewOnly}}disabled{{/if}} value="{{client.name}}">
+                    <div id="nameHelp" class="form-text text-danger"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email</label>
+                    <input type="text" name="email" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" oninput="checkEmail(event)" {{#if viewOnly}}disabled{{/if}} value="{{client.email}}">
+                    <div id="emailHelp" class="form-text text-danger"></div>
+                </div>
+            </div>
+            {{#if viewOnly}}{{else}}
+            <div class="col-12 col-md-6">
+                <button type="submit" class="btn btn-primary align-self-start">Update</button>
+            </div>
+            {{/if}}
+        </div>
+    </form>
+</div>
