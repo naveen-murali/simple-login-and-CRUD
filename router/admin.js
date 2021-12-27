@@ -4,7 +4,6 @@ const { check, validationResult } = require("express-validator");
 
 const { isAdminIn, isAdminHome } = require("../middleware/protection");
 const adminHelper = require("../helper/adminhelper");
-const { reject } = require('bcrypt/promises');
 
 
 // @desc        For getting home page
@@ -65,7 +64,7 @@ router.post("/login", isAdminIn,
 );
 
 
-// @desc        For loging iOUT
+// @desc        For loging OUT
 // @rout        GET /admin/logout
 router.get("/logout", isAdminHome, (req, res) => {
     delete req.session.admin;
@@ -180,6 +179,9 @@ router.post('/updateUser/:id', isAdminHome, (req, res) => {
 // @desc        For admin text search.
 // @rout        GET /admin/search
 router.get('/search', isAdminHome, (req, res) => {
+    if (req.query.search == false)
+        res.redirect("/admin");
+
     adminHelper.SEARCH_USER(req.query.search)
         .then(resolve => {
             res.render(

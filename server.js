@@ -44,9 +44,10 @@ app.use(session({
         secure: process.env.NODE_ENV === "production" ? true : false //TODO: change it into true after https is done.
     },
     store: MongoStore.create({
-        mongoUrl: "mongodb://localhost:27017",
+        mongoUrl: process.env.MONGO_URL,
         dbName: process.env.DB,
-        collectionName: "sessions"
+        collectionName: process.env.SESSION_COLLECTION,
+        ttl: 60 * 60 * 24 * 7
     })
 }));
 app.use(flash());

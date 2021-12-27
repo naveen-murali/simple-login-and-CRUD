@@ -5,7 +5,10 @@ function deleteUser(event, self) {
         type: "delete",
         url: `http://localhost:3000${self.getAttribute("href")}`,
         success: function (response, textStatus, xhr) {
-            location.reload();
+            let url = location.href;
+            url = url.substring(url.indexOf("/admin"), 0);
+            
+            location.href = url + "/admin";
         }
     });
 }

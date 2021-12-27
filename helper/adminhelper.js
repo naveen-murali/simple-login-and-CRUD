@@ -89,7 +89,7 @@ module.exports = {
                 let users = await db.get().collection(process.env.USER_COLLECTION).find({ $text: { $search: search } }).toArray();
                 return resolve(users);
             } catch (err) {
-                return reject({ reason: `Failed to find ${email}` });
+                return reject({ reason: `Failed to find ${search}` });
             }
         })
     }, 
